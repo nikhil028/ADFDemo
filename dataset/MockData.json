@@ -5,13 +5,27 @@
 			"referenceName": "ADLSTest",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"folder_location": {
+				"type": "String"
+			},
+			"file_name": {
+				"type": "String"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "mock_data.json",
-				"fileSystem": "input"
+				"fileName": {
+					"value": "@dataset().file_name",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().folder_location",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {

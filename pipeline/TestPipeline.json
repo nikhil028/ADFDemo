@@ -40,13 +40,33 @@
 				"inputs": [
 					{
 						"referenceName": "MockData",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"folder_location": {
+								"value": "@pipeline().parameters.input_folder_location",
+								"type": "Expression"
+							},
+							"file_name": {
+								"value": "@pipeline().parameters.file_name",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "StagingMockData",
-						"type": "DatasetReference"
+						"referenceName": "MockData",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder_location": {
+								"value": "@pipeline().parameters.output_folder_location",
+								"type": "Expression"
+							},
+							"file_name": {
+								"value": "@pipeline().parameters.file_name",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
@@ -100,22 +120,51 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Repos/odl_user_1012254@simplilearnss.onmicrosoft.com/ADFDemo/ParseJson"
+								"notebookPath": "/Repos/odl_user_1012254@simplilearnss.onmicrosoft.com/ADFDemo/ParseJson",
+								"baseParameters": {
+									"staginglocation": {
+										"value": "@concat(pipeline().parameters.output_folder_location,'/',pipeline().parameters.file_name)",
+										"type": "Expression"
+									}
+								}
 							},
 							"linkedServiceName": {
 								"referenceName": "AzureDatabricks1",
 								"type": "LinkedServiceReference"
 							}
+						},
+						{
+							"name": "SendSuccessEmail",
+							"type": "AzureFunctionActivity",
+							"dependsOn": [
+								{
+									"activity": "TransformData",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": []
 						}
 					]
 				}
 			}
 		],
 		"parameters": {
-			"inputFile": {
+			"input_folder_location": {
 				"type": "string"
 			},
-			"stagingOutputFile": {
+			"file_name": {
+				"type": "string"
+			},
+			"output_folder_location": {
 				"type": "string"
 			}
 		},
