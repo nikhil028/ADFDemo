@@ -8,7 +8,7 @@
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
-					"retry": 1,
+					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
 					"secureInput": false
@@ -84,7 +84,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@activity('CopyFiles').output.pipelineReturnValue",
+						"value": "@equals(1,1)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
@@ -140,6 +140,11 @@
 			},
 			"output_folder_location": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"copy_return": {
+				"type": "Boolean"
 			}
 		},
 		"annotations": []

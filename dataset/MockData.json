@@ -22,10 +22,11 @@
 					"value": "@dataset().file_name",
 					"type": "Expression"
 				},
-				"fileSystem": {
+				"folderPath": {
 					"value": "@dataset().folder_location",
 					"type": "Expression"
-				}
+				},
+				"fileSystem": "adfdemo"
 			}
 		},
 		"schema": {
