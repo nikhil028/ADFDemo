@@ -46,7 +46,9 @@ def read_json(path):
 # COMMAND ----------
 
 def main():
-    input_location = "abfss://adfdemo@storagedemo072023.dfs.core.windows.net/input/mock_data.json"
+    container = "abfss://adfdemo@storagedemo072023.dfs.core.windows.net/"
+    file_path = dbutils.widgets.get("staginglocation")
+    input_location = container+file_path
     read_json(input_location)
 
 
