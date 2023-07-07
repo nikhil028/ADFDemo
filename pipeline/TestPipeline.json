@@ -89,19 +89,13 @@
 					},
 					"ifFalseActivities": [
 						{
-							"name": "SendErrorMail",
-							"type": "AzureFunctionActivity",
+							"name": "Fail1",
+							"type": "Fail",
 							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"method": "GET"
+								"message": "File is not present at source",
+								"errorCode": "404"
 							}
 						}
 					],
@@ -120,7 +114,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Repos/odl_user_1012254@simplilearnss.onmicrosoft.com/ADFDemo/ParseJson",
+								"notebookPath": "/Repos/odl_user_1013192@simplilearnss.onmicrosoft.com/ADFDemo/Pyspark/parse_json",
 								"baseParameters": {
 									"staginglocation": {
 										"value": "@concat(pipeline().parameters.output_folder_location,'/',pipeline().parameters.file_name)",
@@ -132,26 +126,6 @@
 								"referenceName": "AzureDatabricks1",
 								"type": "LinkedServiceReference"
 							}
-						},
-						{
-							"name": "SendSuccessEmail",
-							"type": "AzureFunctionActivity",
-							"dependsOn": [
-								{
-									"activity": "TransformData",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": []
 						}
 					]
 				}
