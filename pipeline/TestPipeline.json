@@ -51,8 +51,8 @@
 				]
 			},
 			{
-				"name": "Filter1",
-				"type": "Filter",
+				"name": "CheckIfFileCopied",
+				"type": "IfCondition",
 				"dependsOn": [
 					{
 						"activity": "CopyFiles",
@@ -61,9 +61,64 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@activity('CopyFiles').output.pipelineReturnValue",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "SendErrorMail",
+							"type": "AzureFunctionActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "GET"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "TransformData",
+							"description": "To transform data using pyspark script",
+							"type": "DatabricksNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Repos/odl_user_1012254@simplilearnss.onmicrosoft.com/ADFDemo/ParseJson"
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureDatabricks1",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
 			}
 		],
+		"parameters": {
+			"inputFile": {
+				"type": "string"
+			},
+			"stagingOutputFile": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
