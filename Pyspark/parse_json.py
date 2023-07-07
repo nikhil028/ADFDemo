@@ -15,7 +15,7 @@ dbutils.fs.ls("abfss://adfdemo@storagedemo072023.dfs.core.windows.net/")
 
 # COMMAND ----------
 
-def read_json(path):
+def read_json(container,input_file_path):
     sch=StructType([
         StructField("id",StringType(),False),
         StructField("first_name",StringType(),True),
@@ -29,6 +29,7 @@ def read_json(path):
             ))
         ]))
     ])
+    input_location = container+input_file_path
     df1 = spark.read.format('json').schema(sch).load(path)
     
     #Create separate columns for nested json
@@ -39,17 +40,27 @@ def read_json(path):
     
     df3 = df2.select("id","name","email","street","city","state")
     
-    df3.show() 
+    return df3
 
 
 
 # COMMAND ----------
 
+def write_file(container,output_file_path,read_df):
+    output_location = container+output_file_path
+    read_df.write.mode('overwrite').csv(output_location)
+    
+
+# COMMAND ----------
+
 def main():
     container = "abfss://adfdemo@storagedemo072023.dfs.core.windows.net/"
-    file_path = dbutils.widgets.get("staginglocation")
-    input_location = container+file_path
-    read_json(input_location)
+    input_file_path = dbutils.widgets.get("staginglocation")
+    output_file_path = "output"
+
+    read_df = read_json(container,input_file_path)
+
+    write_file(container,output_file_path,read_df)
 
 
 if __name__ == "__main__":
