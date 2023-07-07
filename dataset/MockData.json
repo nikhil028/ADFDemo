@@ -1,0 +1,57 @@
+{
+	"name": "MockData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLSTest",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "mock_data.json",
+				"fileSystem": "input"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"first_name": {
+					"type": "string"
+				},
+				"last_name": {
+					"type": "string"
+				},
+				"email": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"address": {
+					"type": "object",
+					"properties": {
+						"state": {
+							"type": "string"
+						},
+						"specific": {
+							"type": "object",
+							"properties": {
+								"city": {
+									"type": "string"
+								},
+								"street": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
